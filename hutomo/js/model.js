@@ -22,7 +22,8 @@
 		callback = callback || function () {};
 
 		var newItem = {
-			title: title.trim()
+			title: title.trim(),
+			completed: false
 		};
 
 		this.storage.save(newItem, callback);
@@ -95,12 +96,17 @@
 	Model.prototype.getCount = function (callback) {
 		var todos = {
 			active: 0,
+			completed: 0,
 			total: 0
 		};
 
 		this.storage.findAll(function (data) {
 			data.forEach(function (todo) {
-				todos.active++;
+				if (todo.completed) {
+					todos.completed++;
+				} else {
+					todos.active++;
+				}
 
 				todos.total++;
 			});
